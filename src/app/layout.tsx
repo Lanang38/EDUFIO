@@ -4,6 +4,9 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Edufio · Penjadwalan Sesi Les",
   description: "Jadwalkan sesi les privat Edufio langkah demi langkah.",
+  icons: {
+    icon: 'Edufio.png',
+  },
 };
 
 export const viewport: Viewport = {
