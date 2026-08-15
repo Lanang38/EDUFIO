@@ -11,6 +11,7 @@
   --color-ink: #242829;
   --color-error: #b5461b;
   --color-error-dark: #8a360f;
+  --color-warning: ##8A5A00;
 }
 
 @theme inline {
@@ -24,6 +25,7 @@
   --color-ink: var(--color-ink);
   --color-error: var(--color-error);
   --color-error-dark: var(--color-error-dark);
+  --color-warning: var(--color-warning);
   --font-sans: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
 }
 

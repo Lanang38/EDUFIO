@@ -4,6 +4,9 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Edufio · Penjadwalan Sesi Les",
   description: "Jadwalkan sesi les privat Edufio langkah demi langkah.",
+  icons: {
+    icon: 'Edufio.png',
+  },
 };
 
 export const viewport: Viewport = {
@@ -17,7 +20,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="id" className="h-full antialiased">
       <body className="min-h-full flex flex-col bg-bg text-ink font-sans">
-        <div className="mx-auto flex w-full max-w-[480px] flex-1 flex-col bg-bg">
+        <div className="mx-auto flex w-full flex-1 flex-col bg-bg lg:max-w-7xl">
           {children}
         </div>
       </body>
