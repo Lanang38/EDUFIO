@@ -183,7 +183,7 @@ function DetailSesiInner({ paketId }: { paketId: string }) {
             <SecondaryButton
               onClick={handleDelete}
               disabled={saving}
-              className="!border-error/30 !text-error"
+              className="border-error/30! text-error!"
             >
               Hapus sesi
             </SecondaryButton>
@@ -209,15 +209,15 @@ function DetailSesiInner({ paketId }: { paketId: string }) {
 
       {conflict && (
         <div className="mb-5 rounded-xl border border-accent bg-accent/10 px-4 py-3">
-          <p className="flex items-center gap-1.5 text-sm font-semibold text-[#8A5A00]">
+          <p className="flex items-center gap-1.5 text-sm font-semibold text-warning">
             <TriangleAlert size={16} strokeWidth={2.2} />
             Bentrok dengan sesi lain
           </p>
-          <p className="mt-1 text-xs text-[#8A5A00]/90">
+          <p className="mt-1 text-xs text-warning/90">
             {formatFullDate(conflict.date)} · {conflict.startTime}–
             {conflict.endTime} · {conflict.topic || 'Tanpa materi'}
           </p>
-          <p className="mt-1 text-xs text-[#8A5A00]/70">
+          <p className="mt-1 text-xs text-warning/70">
             Geser jam mulai untuk melanjutkan.
           </p>
         </div>
