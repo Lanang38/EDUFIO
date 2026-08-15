@@ -15,7 +15,7 @@ Butuh **Node.js 20+**, **npm**, dan akses ke sebuah database **MongoDB**
 
 ```bash
 npm install
-cp .env.contoh .env.local   # lalu isi MONGODB_URI di file ini
+cp .env.local.example .env.local   # lalu isi MONGODB_URI di file ini
 npm run dev
 ```
 
