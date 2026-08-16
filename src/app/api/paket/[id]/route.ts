@@ -17,7 +17,6 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
 
   const pCol = await paketCollection();
   const sCol = await sesiCollection();
-  // A package's sessions have no meaning without it — clean them up together.
   await Promise.all([
     pCol.deleteOne({ _id: new ObjectId(id) }),
     sCol.deleteMany({ paketId: id }),

@@ -1,12 +1,5 @@
 import { Paket, Sesi } from "./types";
 
-/**
- * Client-side data layer. Same function names/shapes as the old
- * localStorage version, but now backed by MongoDB through the API routes
- * under src/app/api/ — every function here does a fetch() instead of a
- * synchronous localStorage read/write, so every call site awaits it.
- */
-
 async function jsonOrThrow<T>(res: Response): Promise<T> {
   if (!res.ok) {
     const body = await res.json().catch(() => null);
@@ -40,7 +33,6 @@ export async function deletePaket(id: string): Promise<void> {
   await fetch(`/api/paket/${id}`, { method: "DELETE" });
 }
 
-// ---------- Sesi ----------
 
 export async function getAllSesi(): Promise<Sesi[]> {
   return jsonOrThrow<Sesi[]>(await fetch("/api/sesi", { cache: "no-store" }));

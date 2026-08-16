@@ -2,12 +2,6 @@ import { MongoClient } from "mongodb";
 
 const dbName = process.env.MONGODB_DB || "edufio";
 
-// mongodb+srv:// needs a DNS SRV (and TXT) lookup over UDP port 53 to find
-// the Atlas cluster's real hosts. Some networks block that query type
-// entirely, so the driver fails with "querySrv ECONNREFUSED" even with a
-// correct URI/credentials. We resolve the same records ourselves over
-// DNS-over-HTTPS (port 443, effectively never blocked) and rewrite the URI
-// to the standard mongodb://host1,host2,.../ form, which needs no SRV query.
 async function dohQuery(name: string, type: "SRV" | "TXT"): Promise<{ data: string }[]> {
   const url = `https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(name)}&type=${type}`;
   const res = await fetch(url, { headers: { accept: "application/dns-json" } });
@@ -54,11 +48,7 @@ async function buildConnectableUri(): Promise<string> {
   return uri.startsWith("mongodb+srv://") ? resolveSrvUri(uri) : uri;
 }
 
-// Reuse the client (and the resolved-URI work) across Next.js dev
-// hot-reloads so we don't redo DNS-over-HTTPS resolution on every file save.
-// In production each server instance gets its own single client.
 declare global {
-  // eslint-disable-next-line no-var
   var _edufioMongoClientPromise: Promise<MongoClient> | undefined;
 }
 

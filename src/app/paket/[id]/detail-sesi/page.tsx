@@ -296,7 +296,7 @@ function DetailSesiInner({ paketId }: { paketId: string }) {
           </div>
         }
       >
-        {/* JAM MULAI */}
+
         <Field label="Jam mulai" required>
           <Select
             value={startTime}
@@ -314,7 +314,6 @@ function DetailSesiInner({ paketId }: { paketId: string }) {
           Selesai {endTime} · durasi {paket.duration} menit (dari paket)
         </p>
 
-        {/* CONFLICT */}
         {conflict && (
           <div className="mb-5 rounded-xl border border-accent bg-accent/10 px-4 py-3">
             <p className="flex items-center gap-1.5 text-sm font-semibold text-warning">
@@ -333,7 +332,6 @@ function DetailSesiInner({ paketId }: { paketId: string }) {
           </div>
         )}
 
-        {/* LOKASI */}
         <Field label={locationLabel} required>
           <TextInput
             value={location}
@@ -346,7 +344,6 @@ function DetailSesiInner({ paketId }: { paketId: string }) {
           Mode: {paket.mode === 'onsite' ? 'Tutor datang ke lokasi' : 'Online'}
         </p>
 
-        {/* MATERI */}
         <Field
           label="Materi yang akan disampaikan"
           required
@@ -367,7 +364,6 @@ function DetailSesiInner({ paketId }: { paketId: string }) {
         </Field>
       </Screen>
 
-      {/* MODAL HAPUS SESI */}
       {confirmDelete && existing && (
         <ConfirmModal
           title="Hapus Sesi?"
