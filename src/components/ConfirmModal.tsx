@@ -21,6 +21,7 @@ export function ConfirmModal({
   cancelText = 'Batal',
 }: ConfirmModalProps): JSX.Element {
   return (
+    // Overlay modal
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4"
       onClick={() => {
@@ -29,6 +30,7 @@ export function ConfirmModal({
         }
       }}
     >
+      {/* Isi modal */}
       <div
         className="w-full max-w-sm rounded-3xl bg-white p-6 text-center shadow-lg"
         onClick={(e) => e.stopPropagation()}

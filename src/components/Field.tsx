@@ -31,6 +31,9 @@ export function Field({
   );
 }
 
+/**
+ * Input teks.
+ */
 export function TextInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <input
@@ -43,6 +46,9 @@ export function TextInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
   );
 }
 
+/**
+ * Textarea.
+ */
 export function TextArea(
   props: React.TextareaHTMLAttributes<HTMLTextAreaElement>,
 ) {
@@ -57,6 +63,9 @@ export function TextArea(
   );
 }
 
+/**
+ * Select dropdown dengan icon ChevronDown.
+ */
 export function Select(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
   return (
     <div className="relative">
@@ -76,6 +85,9 @@ export function Select(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
   );
 }
 
+/**
+ * Group pilihan berbentuk tombol.
+ */
 export function PillGroup<T extends string | number>({
   options,
   value,
@@ -114,6 +126,9 @@ export function PillGroup<T extends string | number>({
   );
 }
 
+/**
+ * Group pilihan berbentuk radio card.
+ */
 export function RadioCard<T extends string>({
   options,
   value,
@@ -124,6 +139,7 @@ export function RadioCard<T extends string>({
   onChange: (v: T) => void;
 }) {
   return (
+    // Daftar pilihan radio
     <div className="flex flex-col gap-2 sm:grid sm:grid-cols-2 sm:gap-3">
       {options.map((opt) => {
         const active = opt.value === value;
@@ -164,6 +180,9 @@ export function RadioCard<T extends string>({
   );
 }
 
+/**
+ * Tombol utama dengan warna navy dan efek hover teal.
+ */
 export function PrimaryButton(
   props: React.ButtonHTMLAttributes<HTMLButtonElement> & {
     fullWidth?: boolean;
@@ -181,6 +200,9 @@ export function PrimaryButton(
   );
 }
 
+/**
+ * Tombol sekunder dengan border dan background putih.
+ */
 export function SecondaryButton(
   props: React.ButtonHTMLAttributes<HTMLButtonElement> & {
     fullWidth?: boolean;

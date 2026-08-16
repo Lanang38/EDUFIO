@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { DAYS_SHORT, MONTHS, todayISO, toISODate } from '@/lib/format';
 
-// Indonesian week starts on Monday.
 const WEEKDAY_ORDER = [1, 2, 3, 4, 5, 6, 0];
 
 export function Calendar({
@@ -24,7 +23,6 @@ export function Calendar({
 
   const firstOfMonth = new Date(cursor.year, cursor.month, 1);
   const daysInMonth = new Date(cursor.year, cursor.month + 1, 0).getDate();
-  // getDay(): 0=Sun..6=Sat -> convert to Monday-first column index (0..6)
   const leading = (firstOfMonth.getDay() + 6) % 7;
 
   const cells: (number | null)[] = [
@@ -47,6 +45,7 @@ export function Calendar({
 
   return (
     <div>
+      {/* Header kalender dan navigasi bulan */}
       <div className="mb-3 flex items-center justify-between rounded-xl border border-line bg-white px-2 py-2">
         <button
           type="button"
@@ -69,6 +68,7 @@ export function Calendar({
         </button>
       </div>
 
+      {/* Grid kalender */}
       <div className="grid grid-cols-7 gap-y-1 text-center">
         {WEEKDAY_ORDER.map((d) => (
           <div key={d} className="pb-1 text-xs font-semibold text-ink/40">
@@ -110,6 +110,7 @@ export function Calendar({
         })}
       </div>
 
+      {/* Keterangan indikator kalender */}
       <div className="mt-4 flex flex-col gap-1.5 text-xs text-ink/50">
         <div className="flex items-center gap-2">
           <span className="h-1.5 w-1.5 rounded-full bg-teal" /> sudah ada sesi
