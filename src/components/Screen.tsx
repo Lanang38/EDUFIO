@@ -27,7 +27,6 @@ export function Screen({
 
   return (
     <div className="flex min-h-screen flex-col bg-bg">
-      {/* HEADER */}
       <header className="sticky top-0 z-10 border-b border-line bg-bg/95 backdrop-blur">
         <div
           className={`mx-auto flex w-full ${container} items-center gap-3 px-5 py-6 sm:px-8 lg:px-12`}
@@ -53,7 +52,6 @@ export function Screen({
         </div>
       </header>
 
-      {/* CONTENT */}
       <main
         className={`mx-auto flex w-full ${container} flex-1 flex-col gap-8 px-5 py-5 sm:px-8 lg:flex-row lg:items-start lg:px-12 lg:py-10`}
       >
@@ -67,8 +65,7 @@ export function Screen({
           </aside>
         )}
       </main>
-
-      {/* BOTTOM ACTION */}
+      
       {bottom && (
         <div className="sticky bottom-0 border-t border-line bg-bg/95 backdrop-blur">
           <div

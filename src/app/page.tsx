@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { getAllPaket, getAllSesi } from '@/lib/storage';
 import { Paket, Sesi, PROGRAM_LABEL } from '@/lib/types';
 import { PrimaryButton } from '@/components/Field';
+import { Loader2 } from 'lucide-react';
 
 export default function DashboardPage() {
   const [paketList, setPaketList] = useState<Paket[] | null>(null);
@@ -59,12 +60,20 @@ export default function DashboardPage() {
 
         <main className="flex-1 px-5 pb-28 sm:px-0 sm:pb-16">
           {paketList === null ? (
-            <p className="py-10 text-center text-sm text-ink/40">Memuat…</p>
+            <div className="flex min-h-[60vh] flex-col items-center justify-center gap-3 text-ink/50">
+              <Loader2
+                size={26}
+                className="animate-spin text-teal"
+                strokeWidth={2.2}
+              />
+              <p className="text-sm">Memuat...</p>
+            </div>
           ) : paketList.length === 0 ? (
             <div className="mt-6 rounded-2xl border border-dashed border-line bg-white px-5 py-10 text-center sm:mt-4">
               <p className="text-[15px] font-semibold text-navy">
                 Belum ada siswa terdaftar
               </p>
+
               <p className="mt-1 text-sm text-ink/50">
                 Mulai dengan mendaftarkan siswa dan paket lesnya.
               </p>
@@ -75,10 +84,12 @@ export default function DashboardPage() {
                 const count = sesiList.filter(
                   (s) => s.paketId === paket.id,
                 ).length;
+
                 const pct = Math.min(
                   100,
                   Math.round((count / paket.packageSize) * 100),
                 );
+
                 return (
                   <li key={paket.id}>
                     <Link
@@ -90,15 +101,18 @@ export default function DashboardPage() {
                           <p className="font-bold text-navy">
                             {paket.studentName}
                           </p>
+
                           <p className="text-sm text-ink/60">
                             {PROGRAM_LABEL[paket.program]} · paket{' '}
                             {paket.packageSize} sesi
                           </p>
                         </div>
+
                         <span className="shrink-0 rounded-full bg-blue-pastel/40 px-2.5 py-1 text-xs font-semibold text-navy">
                           {count}/{paket.packageSize}
                         </span>
                       </div>
+
                       <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-line">
                         <div
                           className="h-full rounded-full bg-teal"

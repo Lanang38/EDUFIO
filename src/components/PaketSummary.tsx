@@ -1,8 +1,6 @@
 import { ReactNode } from "react";
 import { Paket, PROGRAM_LABEL, MODE_LABEL } from "@/lib/types";
 
-/** Compact "who / what package" context card — used in the desktop aside panel
- * so the admin doesn't lose track of which student they're scheduling for. */
 export function PaketSummaryCard({ paket, footer }: { paket: Paket; footer?: ReactNode }) {
   return (
     <div className="rounded-2xl border border-line bg-white p-5">

@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { DAYS_SHORT, MONTHS, todayISO, toISODate } from '@/lib/format';
 
-// Indonesian week starts on Monday.
 const WEEKDAY_ORDER = [1, 2, 3, 4, 5, 6, 0];
 
 export function Calendar({
@@ -24,7 +23,6 @@ export function Calendar({
 
   const firstOfMonth = new Date(cursor.year, cursor.month, 1);
   const daysInMonth = new Date(cursor.year, cursor.month + 1, 0).getDate();
-  // getDay(): 0=Sun..6=Sat -> convert to Monday-first column index (0..6)
   const leading = (firstOfMonth.getDay() + 6) % 7;
 
   const cells: (number | null)[] = [

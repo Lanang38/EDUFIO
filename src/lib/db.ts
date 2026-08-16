@@ -15,7 +15,6 @@ export async function sesiCollection(): Promise<Collection<SesiDoc>> {
   return db.collection<SesiDoc>("sesi");
 }
 
-/** Mongo's `_id` (ObjectId) becomes the app's plain string `id`, same shape as before. */
 export function toPaket(doc: WithId<PaketDoc>): Paket {
   const { _id, ...rest } = doc;
   return { id: _id.toString(), ...rest };

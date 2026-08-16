@@ -17,7 +17,6 @@ export const MODE_LABEL: Record<Mode, string> = {
   online: "Online",
 };
 
-/** A registered tuition package for one student — screen 1 of the flow. */
 export interface Paket {
   id: string;
   studentName: string;
@@ -25,17 +24,16 @@ export interface Paket {
   packageSize: PackageSize;
   duration: Duration;
   mode: Mode;
-  createdAt: string; // ISO timestamp
+  createdAt: string;
 }
 
-/** A single scheduled session inside a package — screens 2 & 3 of the flow. */
 export interface Sesi {
   id: string;
   paketId: string;
-  date: string; // YYYY-MM-DD
-  startTime: string; // HH:mm
-  endTime: string; // HH:mm, derived from startTime + paket.duration at creation time
+  date: string;
+  startTime: string;
+  endTime: string;
   location: string;
   topic: string;
-  createdAt: string; // ISO timestamp
+  createdAt: string;
 }
