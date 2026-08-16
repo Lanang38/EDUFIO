@@ -2,12 +2,11 @@ import { MongoClient } from "mongodb";
 
 const dbName = process.env.MONGODB_DB || "edufio";
 
-// mongodb+srv:// needs a DNS SRV (and TXT) lookup over UDP port 53 to find
-// the Atlas cluster's real hosts. Some networks block that query type
-// entirely, so the driver fails with "querySrv ECONNREFUSED" even with a
-// correct URI/credentials. We resolve the same records ourselves over
-// DNS-over-HTTPS (port 443, effectively never blocked) and rewrite the URI
-// to the standard mongodb://host1,host2,.../ form, which needs no SRV query.
+/**
+ * Melakukan query DNS melalui DNS-over-HTTPS (DoH).
+ * Digunakan untuk mendapatkan record SRV atau TXT MongoDB Atlas
+ * tanpa bergantung pada DNS SRV lokal.
+ */
 async function dohQuery(name: string, type: "SRV" | "TXT"): Promise<{ data: string }[]> {
   const url = `https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(name)}&type=${type}`;
   const res = await fetch(url, { headers: { accept: "application/dns-json" } });
@@ -18,6 +17,10 @@ async function dohQuery(name: string, type: "SRV" | "TXT"): Promise<{ data: stri
   return json.Answer ?? [];
 }
 
+/**
+ * Mengubah MongoDB Atlas URI berbasis mongodb+srv://
+ * menjadi URI mongodb:// menggunakan host hasil resolusi SRV dan TXT.
+ */
 async function resolveSrvUri(uri: string): Promise<string> {
   const match = uri.match(/^mongodb\+srv:\/\/(?:([^@]+)@)?([^/?]+)(\/[^?]*)?(?:\?(.*))?$/);
   if (!match) throw new Error("Format MONGODB_URI (mongodb+srv://) tidak dikenali.");
@@ -44,6 +47,10 @@ async function resolveSrvUri(uri: string): Promise<string> {
   return `mongodb://${auth ? `${auth}@` : ""}${hosts.join(",")}${path || "/"}?${params.toString()}`;
 }
 
+/**
+ * Mengambil MONGODB_URI dari environment
+ * dan menyiapkan URI yang dapat digunakan MongoDB Client.
+ */
 async function buildConnectableUri(): Promise<string> {
   const uri = process.env.MONGODB_URI;
   if (!uri) {
@@ -54,14 +61,18 @@ async function buildConnectableUri(): Promise<string> {
   return uri.startsWith("mongodb+srv://") ? resolveSrvUri(uri) : uri;
 }
 
-// Reuse the client (and the resolved-URI work) across Next.js dev
-// hot-reloads so we don't redo DNS-over-HTTPS resolution on every file save.
-// In production each server instance gets its own single client.
+// Menyimpan Promise MongoDB Client secara global
+// agar koneksi dapat digunakan kembali saat development.
 declare global {
   // eslint-disable-next-line no-var
   var _edufioMongoClientPromise: Promise<MongoClient> | undefined;
 }
 
+/**
+ * Membuat atau mengambil koneksi MongoDB yang sudah ada.
+ * Pada development, koneksi disimpan secara global
+ * untuk mencegah koneksi baru saat Next.js melakukan hot reload.
+ */
 function getClientPromise(): Promise<MongoClient> {
   const connect = async () => new MongoClient(await buildConnectableUri()).connect();
 
@@ -75,6 +86,9 @@ function getClientPromise(): Promise<MongoClient> {
   return connect();
 }
 
+/**
+ * Mengambil database Edufio dari koneksi MongoDB.
+ */
 export async function getDb() {
   const client = await getClientPromise();
   return client.db(dbName);
