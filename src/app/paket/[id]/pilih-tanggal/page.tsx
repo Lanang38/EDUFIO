@@ -1,20 +1,25 @@
-"use client";
+'use client';
 
-import { use, useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
-import { Screen, useGoBack } from "@/components/Screen";
-import { Calendar } from "@/components/Calendar";
-import { PrimaryButton } from "@/components/Field";
-import { PaketSummaryCard } from "@/components/PaketSummary";
-import { getAllSesi, getPaket } from "@/lib/storage";
-import { minBookableDate, remainingQuota, scheduledCount } from "@/lib/rules";
-import { Paket, Sesi } from "@/lib/types";
-import { NotFound } from "@/components/NotFound";
+import { use, useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Loader2 } from 'lucide-react';
+import { Screen, useGoBack } from '@/components/Screen';
+import { Calendar } from '@/components/Calendar';
+import { PrimaryButton } from '@/components/Field';
+import { PaketSummaryCard } from '@/components/PaketSummary';
+import { getAllSesi, getPaket } from '@/lib/storage';
+import { minBookableDate, remainingQuota, scheduledCount } from '@/lib/rules';
+import { Paket, Sesi } from '@/lib/types';
+import { NotFound } from '@/components/NotFound';
 
-export default function PilihTanggalPage({ params }: { params: Promise<{ id: string }> }) {
+export default function PilihTanggalPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = use(params);
   const router = useRouter();
-  const goBack = useGoBack("/");
+  const goBack = useGoBack('/');
 
   const [paket, setPaket] = useState<Paket | null | undefined>(undefined);
   const [allSesi, setAllSesi] = useState<Sesi[]>([]);
@@ -22,14 +27,18 @@ export default function PilihTanggalPage({ params }: { params: Promise<{ id: str
 
   useEffect(() => {
     let cancelled = false;
+
     async function load() {
       const [p, s] = await Promise.all([getPaket(id), getAllSesi()]);
+
       if (!cancelled) {
         setPaket(p ?? null);
         setAllSesi(s);
       }
     }
+
     load();
+
     return () => {
       cancelled = true;
     };
@@ -37,11 +46,27 @@ export default function PilihTanggalPage({ params }: { params: Promise<{ id: str
 
   const minDate = useMemo(() => minBookableDate(), []);
 
-  if (paket === undefined) return null;
-  if (paket === null) return <NotFound />;
+  if (paket === undefined) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center gap-3 bg-bg text-ink/50">
+        <Loader2
+          size={26}
+          className="animate-spin text-teal"
+          strokeWidth={2.2}
+        />
+        <p className="text-sm">Memuat...</p>
+      </div>
+    );
+  }
+
+  if (paket === null) {
+    return <NotFound />;
+  }
 
   const sesiTerjadwal = allSesi.filter((s) => s.paketId === paket.id);
+
   const markedDates = new Set(sesiTerjadwal.map((s) => s.date));
+
   const used = scheduledCount(paket.id, allSesi);
   const remaining = remainingQuota(paket, allSesi);
 
@@ -50,9 +75,12 @@ export default function PilihTanggalPage({ params }: { params: Promise<{ id: str
       <Screen title="Pilih tanggal" onBack={goBack}>
         <div className="mt-6 rounded-2xl border border-line bg-white p-5 text-center">
           <p className="font-semibold text-navy">Paket sudah penuh</p>
+
           <p className="mt-1 text-sm text-ink/60">
-            Seluruh {paket.packageSize} sesi dalam paket {paket.studentName} sudah dijadwalkan.
+            Seluruh {paket.packageSize} sesi dalam paket {paket.studentName}{' '}
+            sudah dijadwalkan.
           </p>
+
           <button
             onClick={() => router.push(`/paket/${paket.id}/ringkasan`)}
             className="mt-4 text-sm font-semibold text-teal underline underline-offset-2"
@@ -82,13 +110,20 @@ export default function PilihTanggalPage({ params }: { params: Promise<{ id: str
       bottom={
         <PrimaryButton
           disabled={!selectedDate}
-          onClick={() => router.push(`/paket/${paket.id}/detail-sesi?date=${selectedDate}`)}
+          onClick={() =>
+            router.push(`/paket/${paket.id}/detail-sesi?date=${selectedDate}`)
+          }
         >
           Lanjut
         </PrimaryButton>
       }
     >
-      <Calendar value={selectedDate} onChange={setSelectedDate} minDate={minDate} markedDates={markedDates} />
+      <Calendar
+        value={selectedDate}
+        onChange={setSelectedDate}
+        minDate={minDate}
+        markedDates={markedDates}
+      />
     </Screen>
   );
 }

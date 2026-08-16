@@ -3,7 +3,7 @@
 import { use, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ChevronLeft, ChevronRight, Trash2, Plus } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Trash2, Plus, Loader2 } from 'lucide-react';
 
 import { Screen } from '@/components/Screen';
 import { PrimaryButton, SecondaryButton } from '@/components/Field';
@@ -57,7 +57,14 @@ export default function RingkasanPage({
   }, [id]);
 
   if (paket === undefined) {
-    return null;
+    return (
+      <Screen title="Ringkasan" wide>
+        <div className="flex min-h-[60vh] flex-col items-center justify-center gap-3">
+          <Loader2 size={28} className="animate-spin text-teal" />
+          <p className="text-sm text-ink/50">Memuat...</p>
+        </div>
+      </Screen>
+    );
   }
 
   if (paket === null) {
