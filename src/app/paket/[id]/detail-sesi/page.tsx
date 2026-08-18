@@ -144,15 +144,6 @@ function DetailSesiInner({ paketId }: { paketId: string }) {
     return findConflict(allSesi, date, startTime, endTime, existing?.id);
   }, [allSesi, date, startTime, endTime, existing]);
 
-  /*
-   * Loading state
-   *
-   * paket === undefined:
-   * data paket masih dimuat.
-   *
-   * existing === undefined:
-   * data sesi yang sedang diedit masih dimuat.
-   */
   if (paket === undefined || existing === undefined) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-3 bg-bg text-ink/50">
