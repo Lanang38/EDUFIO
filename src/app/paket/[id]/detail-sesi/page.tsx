@@ -4,7 +4,7 @@ import { Suspense, use, useEffect, useMemo, useState } from 'react';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import { TriangleAlert } from 'lucide-react';
+import { Loader2, TriangleAlert } from 'lucide-react';
 
 import { Screen, useGoBack } from '@/components/Screen';
 
@@ -144,8 +144,27 @@ function DetailSesiInner({ paketId }: { paketId: string }) {
     return findConflict(allSesi, date, startTime, endTime, existing?.id);
   }, [allSesi, date, startTime, endTime, existing]);
 
+  /*
+   * Loading state
+   *
+   * paket === undefined:
+   * data paket masih dimuat.
+   *
+   * existing === undefined:
+   * data sesi yang sedang diedit masih dimuat.
+   */
   if (paket === undefined || existing === undefined) {
-    return null;
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center gap-3 bg-bg text-ink/50">
+        <Loader2
+          size={26}
+          className="animate-spin text-teal"
+          strokeWidth={2.2}
+        />
+
+        <p className="text-sm">Memuat...</p>
+      </div>
+    );
   }
 
   if (paket === null) {
@@ -296,7 +315,6 @@ function DetailSesiInner({ paketId }: { paketId: string }) {
           </div>
         }
       >
-        {/* JAM MULAI */}
         <Field label="Jam mulai" required>
           <Select
             value={startTime}
@@ -314,7 +332,6 @@ function DetailSesiInner({ paketId }: { paketId: string }) {
           Selesai {endTime} · durasi {paket.duration} menit (dari paket)
         </p>
 
-        {/* CONFLICT */}
         {conflict && (
           <div className="mb-5 rounded-xl border border-accent bg-accent/10 px-4 py-3">
             <p className="flex items-center gap-1.5 text-sm font-semibold text-warning">
@@ -333,7 +350,6 @@ function DetailSesiInner({ paketId }: { paketId: string }) {
           </div>
         )}
 
-        {/* LOKASI */}
         <Field label={locationLabel} required>
           <TextInput
             value={location}
@@ -346,7 +362,6 @@ function DetailSesiInner({ paketId }: { paketId: string }) {
           Mode: {paket.mode === 'onsite' ? 'Tutor datang ke lokasi' : 'Online'}
         </p>
 
-        {/* MATERI */}
         <Field
           label="Materi yang akan disampaikan"
           required
@@ -367,7 +382,6 @@ function DetailSesiInner({ paketId }: { paketId: string }) {
         </Field>
       </Screen>
 
-      {/* MODAL HAPUS SESI */}
       {confirmDelete && existing && (
         <ConfirmModal
           title="Hapus Sesi?"
